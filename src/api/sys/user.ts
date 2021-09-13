@@ -1,7 +1,5 @@
-import { defHttp } from '/@/utils/http/axios';
-import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
-
-import { ErrorMessageMode } from '/#/axios';
+import { GetUserInfoModel, LoginParams, LoginResultModel } from './model/userModel';
+import { ajax } from '/@/utils/network';
 
 enum Api {
   Login = '/login',
@@ -13,29 +11,21 @@ enum Api {
 /**
  * @description: user login api
  */
-export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<LoginResultModel>(
-    {
-      url: Api.Login,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    }
-  );
+export function loginApi(params: LoginParams) {
+  return ajax<LoginResultModel>({ url: Api.Login }).send({ params });
 }
 
 /**
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo });
+  return ajax<GetUserInfoModel>({ url: Api.GetUserInfo, method: 'GET' }).send();
 }
 
 export function getPermCode() {
-  return defHttp.get<string[]>({ url: Api.GetPermCode });
+  return ajax<string[]>({ url: Api.GetUserInfo, method: 'GET' }).send();
 }
 
 export function doLogout() {
-  return defHttp.get({ url: Api.Logout });
+  return ajax<string[]>({ url: Api.Logout, method: 'GET' }).send();
 }
